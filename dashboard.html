@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>mediBot</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--sb:#C66F80;--sbl:#F4C7D0;--sbx:#FCEBF1;--mg:#4A6644;--mm:#9FAA74;--ml:#D7DAB3;--cr:#ECE3D2;--ink:#2F3B2C;--bg:#FBF6F1;--card:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1F2A1D;--card:#2A3727;--ink:#F3EBDD;--cr:#34422F;--sbx:#3A2A30}}
+:root[data-theme="dark"]{--bg:#1F2A1D;--card:#2A3727;--ink:#F3EBDD;--cr:#34422F;--sbx:#3A2A30}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 'DM Sans',system-ui,sans-serif}
+h1,h2,h3,h4,.brand{font-family:'Fraunces',Georgia,serif;margin:0}
+.brand{font-size:28px;font-weight:600}.brand i{color:var(--sb);font-weight:400}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 40px}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;margin-bottom:20px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chip{background:var(--ml);color:var(--mg);border-radius:99px;padding:4px 12px;font-size:13px;font-weight:500}
+.chip.p{background:var(--sbl);color:#7d3346}
+.card{background:var(--card);border-radius:20px;padding:20px;border:1px solid var(--cr)}
+.login{max-width:460px;margin:5vh auto 0}.login h1{font-size:40px;line-height:1.1;margin:10px 0 14px}
+label{display:block;font-size:13px;font-weight:500;margin:12px 0 4px}
+input,select{width:100%;padding:11px 12px;border-radius:12px;border:1.5px solid var(--ml);background:var(--bg);color:var(--ink);font:inherit}
+input:focus,select:focus,button:focus-visible{outline:3px solid var(--mm);outline-offset:1px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--cr);border-radius:14px;padding:4px;gap:4px}
+.seg button{border:0;border-radius:10px;padding:10px;background:none;font:inherit;font-weight:500;color:var(--ink);cursor:pointer}
+.seg button.on{background:var(--mg);color:#fff}
+.btn{border:0;border-radius:14px;padding:12px 18px;background:var(--sb);color:#fff;font:inherit;font-weight:700;cursor:pointer}
+.btn.g{background:var(--mg)}.btn.o{background:none;color:var(--mg);border:1.5px solid var(--mm)}.btn.w{width:100%;margin-top:18px}
+.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}
+.grid{display:grid;grid-template-columns:290px 1fr;gap:16px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.pl .pb{display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:1.5px solid transparent;background:var(--sbx);border-radius:14px;padding:10px;margin-bottom:8px;font:inherit;color:var(--ink);cursor:pointer}
+.pl .pb.on{border-color:var(--sb);background:var(--sbl);color:#4a1f2b}.pl small{display:block;opacity:.8}
+.av{border-radius:50%;object-fit:cover;display:grid;place-items:center;color:#fff;font:600 1em 'Fraunces',serif;flex:none}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.stat{border-radius:16px;padding:14px}.stat b{font:600 30px 'Fraunces',serif;display:block}
+.s1{background:var(--ml);color:var(--mg)}.s2{background:var(--sb);color:#fff}.s3{background:var(--cr);color:var(--ink)}
+.per{display:inline-block;margin:14px 0 8px;padding:3px 14px;border-radius:99px;font-size:15px}
+.morning{background:var(--ml);color:var(--mg)}.afternoon{background:var(--sbl);color:#7d3346}.evening{background:var(--sbx);color:var(--sb);border:1.5px solid var(--sbl)}.night{background:var(--mg);color:#fff}
+.slot{display:grid;grid-template-columns:62px 1fr auto;gap:12px;align-items:center;border-radius:14px;padding:12px 14px;margin-bottom:8px}
+.slot time{font-weight:700}.slot small{display:block;opacity:.85}
+.taken{background:var(--mm);color:#1f3a1b}.upcoming{background:var(--sbl);color:#5a2434}.due{background:var(--sb);color:#fff}.missed{background:var(--cr);color:var(--ink);border:2px dashed var(--sb)}
+.tag{font-size:12px;font-weight:700;border-radius:99px;padding:2px 10px;background:rgba(255,255,255,.55)}
+.big{background:var(--mg);color:#fff;border-radius:24px;padding:26px;margin-bottom:16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.big h2{font-size:32px;margin:4px 0}.big .btn{background:var(--sbl);color:#4a1f2b;font-size:18px;padding:14px 22px;margin-top:12px}
+details{margin-top:14px;background:var(--sbx);border-radius:14px;padding:12px 14px}summary{cursor:pointer;font-weight:700;color:var(--mg)}
+.hg{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;margin-top:8px}.hg small{display:block;opacity:.7}.hg b{display:block;margin-bottom:6px}.hg i{display:block;height:14px;border-radius:6px;margin-bottom:4px}
+.sr{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--cr)}.sr select{width:auto;max-width:60%}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;font-size:14px;z-index:120}
+#toast.on{opacity:1}
+/* splash */
+#splash{position:fixed;inset:0;z-index:100;background:var(--mg);color:#FBF6F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:opacity .6s;cursor:pointer}
+#splash.out{opacity:0;pointer-events:none}
+#splash svg{width:min(70vw,300px);overflow:visible;animation:drop .8s cubic-bezier(.3,1.4,.5,1) both}
+.cp{transform-box:fill-box;transform-origin:center}
+.h1{animation:s1 .6s .9s both ease-out}.h2{animation:s2 .6s .9s both ease-out}
+@keyframes s1{to{transform:translateX(-30px) rotate(-14deg)}}@keyframes s2{to{transform:translateX(30px) rotate(14deg)}}
+@keyframes drop{from{transform:translateY(-140px) rotate(-45deg);opacity:0}to{transform:none;opacity:1}}
+.pp{transform-box:fill-box;transform-origin:center;animation:pop .7s 1.2s both cubic-bezier(.3,1.5,.5,1)}
+@keyframes pop{from{transform:translate(0,0) scale(0)}to{transform:translate(var(--x),var(--y)) scale(1)}}
+.word{font:600 54px 'Fraunces',Georgia,serif;letter-spacing:.5px}
+.word span{display:inline-block;opacity:0;transform:translateY(16px);animation:up .5s both;animation-delay:calc(1.7s + var(--i)*.09s)}
+.word span.b{color:var(--sbl);font-style:italic;font-weight:400}
+.stag{opacity:0;animation:up .6s 2.5s both;color:var(--ml)}.sk{position:absolute;bottom:calc(24px + env(safe-area-inset-bottom,0px));opacity:.6;font-size:13px}
+@keyframes up{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#splash *{animation-duration:.01s!important;animation-delay:0s!important}}
+</style></head><body>
+<div id="splash"><svg viewBox="0 0 220 120" aria-hidden="true"><circle class="pp" cx="110" cy="60" r="9" fill="#9FAA74" style="--x:-70px;--y:-45px"/><circle class="pp" cx="110" cy="60" r="7" fill="#D7DAB3" style="--x:70px;--y:-50px"/><circle class="pp" cx="110" cy="60" r="8" fill="#FCEBF1" style="--x:-30px;--y:62px"/><circle class="pp" cx="110" cy="60" r="6" fill="#C66F80" style="--x:50px;--y:58px"/>
+<path class="cp h1" d="M110 30H60a30 30 0 0 0 0 60h50z" fill="#C66F80"/><path class="cp h2" d="M110 30h50a30 30 0 0 1 0 60h-50z" fill="#F4C7D0"/></svg>
+<div class="word"><span style="--i:0">m</span><span style="--i:1">e</span><span style="--i:2">d</span><span style="--i:3">i</span><span class="b" style="--i:4">b</span><span class="b" style="--i:5">o</span><span class="b" style="--i:6">t</span></div>
+<div class="stag">Medicine, on time.</div><div class="sk">Tap to skip</div></div>
+<div class="wrap" id="app"></div><div id="toast" role="status"></div>
+<script>
+const T={
+tagline:['Medicine, on time.','दवा, सही समय पर।','औषध, अगदी वेळेवर.'],caregiver:['Caregiver','देखभालकर्ता','काळजीवाहक'],patient:['Patient','मरीज़','रुग्ण'],
+name:['Name','नाम','नाव'],pid:['Patient ID','मरीज़ आईडी','रुग्ण आयडी'],age:['Age','उम्र','वय'],dx:['Diagnosis','निदान','निदान'],photo:['Photo','फ़ोटो','फोटो'],
+lang:['Language','भाषा','भाषा'],area:['Area','क्षेत्र','परिसर'],setting:['Care setting','देखभाल का स्थान','काळजीचे ठिकाण'],fac:['Hospital or old age home','अस्पताल या वृद्धाश्रम','रुग्णालय किंवा वृद्धाश्रम'],
+mic:['Turn on voice (mic) for prompts and replies','संदेशों और जवाबों के लिए आवाज़ (माइक) चालू करें','सूचना आणि उत्तरांसाठी आवाज (माइक) सुरू करा'],
+signIn:['Sign in','साइन इन करें','साइन इन करा'],signOut:['Sign out','साइन आउट','साइन आउट'],idHint:['Your patient ID was given to you by your caregiver.','आपकी मरीज़ आईडी आपके देखभालकर्ता ने दी है।','तुमचा रुग्ण आयडी तुमच्या काळजीवाहकाने दिला आहे.'],
+hello:['Hello','नमस्ते','नमस्कार'],next:['Next dose','अगली खुराक','पुढील डोस'],took:['I took it','मैंने ले ली','मी घेतली'],today:["Today's schedule",'आज का कार्यक्रम','आजचे वेळापत्रक'],
+taken:['Taken','ली गई','घेतली'],due:['Due now','अभी लें','आता घ्या'],upcoming:['Upcoming','आगामी','येणार'],missed:['Missed','छूटी','चुकली'],patients:['Patients','मरीज़','रुग्ण'],
+none:['All doses done for today','आज की सभी खुराक पूरी हो गई हैं','आजचे सर्व डोस पूर्ण झाले आहेत'],adh:['Adherence','नियमितता','नियमितता'],speak:['Speak','बोलें','बोला'],
+morning:['Morning','सुबह','सकाळ'],afternoon:['Afternoon','दोपहर','दुपार'],evening:['Evening','शाम','संध्याकाळ'],night:['Night','रात','रात्र'],
+addMed:['Add a medicine','दवा जोड़ें','औषध जोडा'],med:['Medicine','दवा','औषध'],dose:['Dose','मात्रा','मात्रा'],time:['Time','समय','वेळ'],slot:['Time of day','दिन का समय','दिवसाची वेळ'],
+saveMed:['Save medicine','दवा सहेजें','औषध जतन करा'],addPat:['Add a patient','मरीज़ जोड़ें','रुग्ण जोडा'],savePat:['Save patient','मरीज़ सहेजें','रुग्ण जतन करा'],
+mark:['Mark taken','ली गई चिह्नित करें','घेतली म्हणून नोंदवा'],noMeds:['No medicines yet.','अभी कोई दवा नहीं है।','अजून कोणतेही औषध नाही.'],
+noPat:['No patients here yet. Add one to begin.','यहाँ अभी कोई मरीज़ नहीं है। शुरू करने के लिए एक जोड़ें।','येथे अजून कोणताही रुग्ण नाही. सुरू करण्यासाठी एक जोडा.'],
+cgAdds:['Your caregiver adds and updates your medicines.','आपकी दवाएँ आपका देखभालकर्ता जोड़ता और बदलता है।','तुमची औषधे तुमचा काळजीवाहक जोडतो आणि बदलतो.'],
+mDose:['Missed dose','खुराक छूटी','डोस चुकला'],dDue:['Dose due now','खुराक का समय हो गया','डोसची वेळ झाली'],ok:['On track','ठीक चल रहा है','व्यवस्थित सुरू आहे'],at:['taken at','लेने का समय','घेतल्याची वेळ'],
+rec:['Dose recorded','खुराक दर्ज की गई','डोसची नोंद झाली'],yrs:['years','वर्ष','वर्षे'],cgId:['Your caregiver ID','आपकी देखभालकर्ता आईडी','तुमचा काळजीवाहक आयडी'],newId:['Patient ID allotted','मरीज़ आईडी जारी की गई','रुग्ण आयडी दिला गेला'],
+idNF:['ID not found. Ask your caregiver for your patient ID.','आईडी नहीं मिली। अपने देखभालकर्ता से मरीज़ आईडी पूछें।','आयडी सापडला नाही. तुमच्या काळजीवाहकाकडून रुग्ण आयडी विचारा.'],
+needName:['Enter your name','अपना नाम दर्ज करें','तुमचे नाव लिहा'],needId:['Enter your patient ID','अपनी मरीज़ आईडी दर्ज करें','तुमचा रुग्ण आयडी लिहा'],needFac:['Choose a facility','कोई सुविधा चुनें','एक सुविधा निवडा'],
+needNA:['Add the patient name and age','मरीज़ का नाम और उम्र जोड़ें','रुग्णाचे नाव आणि वय जोडा'],needMed:['Add the medicine name and time','दवा का नाम और समय जोड़ें','औषधाचे नाव आणि वेळ जोडा'],
+heard:['Heard','सुना गया','ऐकले'],listen:['Listening…','सुन रहा हूँ…','ऐकत आहे…'],noVoice:['Voice is not supported in this browser','इस ब्राउज़र में आवाज़ की सुविधा नहीं है','या ब्राउझरमध्ये आवाजाची सुविधा नाही'],
+noHear:['Could not hear you. Try again.','आपकी आवाज़ सुनाई नहीं दी। फिर कोशिश करें।','तुमचा आवाज ऐकू आला नाही. पुन्हा प्रयत्न करा.'],
+hospital:['Hospital','अस्पताल','रुग्णालय'],oldage:['Old age home','वृद्धाश्रम','वृद्धाश्रम'],alone:['Home, living alone','घर पर, अकेले रहते हैं','घरी, एकटे राहतात'],
+other:['Other (type below)','अन्य (नीचे लिखें)','इतर (खाली लिहा)'],otherDx:['Write the diagnosis','निदान लिखें','निदान लिहा'],add:['Add photo','फ़ोटो जोड़ें','फोटो जोडा'],
+doctor:['Assigned doctor','नियुक्त डॉक्टर','नेमलेले डॉक्टर'],history:['History','इतिहास','इतिहास'],tabToday:['Today','आज','आज'],todayL:['Today','आज','आज'],
+settings:['Settings','सेटिंग्स','सेटिंग्ज'],back:['Back','वापस','मागे'],profile:['Profile','प्रोफ़ाइल','प्रोफाइल'],appearance:['Appearance','दिखावट','दिसणे'],
+theme:['Theme','थीम','थीम'],tAuto:['Automatic','स्वचालित','स्वयंचलित'],tLight:['Light','हल्की','फिकट'],tDark:['Dark','गहरी','गडद'],
+tsize:['Text size','अक्षर का आकार','अक्षरांचा आकार'],sN:['Normal','सामान्य','सामान्य'],sL:['Large','बड़ा','मोठा'],sX:['Extra large','बहुत बड़ा','खूप मोठा'],
+voice:['Voice','आवाज़','आवाज'],reminders:['Reminders','अनुस्मारक','स्मरणपत्रे'],lead:['Remind before the dose','खुराक से पहले याद दिलाएँ','डोसच्या आधी आठवण करा'],
+grace:['Mark as missed after','इतने समय बाद छूटी मानें','इतक्या वेळानंतर चुकला म्हणून नोंदवा'],min:['min','मिनट','मिनिटे'],data:['Data','डेटा','डेटा'],
+reset:['Reset demo data','डेमो डेटा रीसेट करें','डेमो डेटा रीसेट करा'],resetQ:['Reset all patients and history to the demo data?','सभी मरीज़ और इतिहास को डेमो डेटा पर रीसेट करें?','सर्व रुग्ण आणि इतिहास डेमो डेटावर रीसेट करायचा?'],
+adh7:['7-day adherence','7 दिन की नियमितता','7 दिवसांची नियमितता'],last7:['Last 7 days','पिछले 7 दिन','मागील 7 दिवस'],log:['Dose log','खुराक का रिकॉर्ड','डोस नोंदी'],noHist:['No history yet.','अभी कोई इतिहास नहीं है।','अजून कोणताही इतिहास नाही.']};
+const TR={Pune:['पुणे','पुणे'],Mumbai:['मुंबई','मुंबई'],Nagpur:['नागपूर','नागपूर'],Home:['घर','घर'],
+'City Care Hospital':['सिटी केयर अस्पताल','सिटी केअर रुग्णालय'],'Lotus Multispeciality Hospital':['लोटस मल्टीस्पेशलिटी अस्पताल','लोटस मल्टिस्पेशालिटी रुग्णालय'],'Sunrise Old Age Home':['सनराइज वृद्धाश्रम','सनराइज वृद्धाश्रम'],'Anand Vruddhashram':['आनंद वृद्धाश्रम','आनंद वृद्धाश्रम'],
+'Harbor View Hospital':['हार्बर व्यू अस्पताल','हार्बर व्ह्यू रुग्णालय'],'Seaside Old Age Home':['सीसाइड वृद्धाश्रम','सीसाइड वृद्धाश्रम'],'Orange City Hospital':['ऑरेंज सिटी अस्पताल','ऑरेंज सिटी रुग्णालय'],'Green Valley Old Age Home':['ग्रीन वैली वृद्धाश्रम','ग्रीन व्हॅली वृद्धाश्रम'],
+'Kamla Joshi':['कमला जोशी','कमला जोशी'],'Ramesh Patil':['रमेश पाटील','रमेश पाटील'],'Meera Iyer':['मीरा अय्यर','मीरा अय्यर'],'Arjun Deshmukh':['अर्जुन देशमुख','अर्जुन देशमुख'],'Sulochana Kulkarni':['सुलोचना कुलकर्णी','सुलोचना कुलकर्णी'],'Vasant Gokhale':['वसंत गोखले','वसंत गोखले'],
+'Dr. Anita Rao':['डॉ. अनिता राव','डॉ. अनिता राव'],'Dr. Sameer Kulkarni':['डॉ. समीर कुलकर्णी','डॉ. समीर कुलकर्णी'],'Dr. Nilesh Joshi':['डॉ. नीलेश जोशी','डॉ. नीलेश जोशी'],'Dr. Priya Menon':['डॉ. प्रिया मेनन','डॉ. प्रिया मेनन'],'Dr. Rahul Bhide':['डॉ. राहुल भिडे','डॉ. राहुल भिडे'],
+Hypertension:['उच्च रक्तचाप','उच्च रक्तदाब'],'Type 2 diabetes':['टाइप 2 मधुमेह','टाइप 2 मधुमेह'],Arthritis:['गठिया','संधिवात'],'Heart disease':['हृदय रोग','हृदयरोग'],'Post-surgery recovery':['सर्जरी के बाद स्वास्थ्य लाभ','शस्त्रक्रियेनंतरची पुनर्प्राप्ती'],Dementia:['मनोभ्रंश','स्मृतिभ्रंश'],Asthma:['दमा','दमा'],
+'1 tablet':['1 गोली','1 गोळी'],'1 capsule':['1 कैप्सूल','1 कॅप्सूल'],'2 puffs':['2 फुहार','2 फवारे']};
+const DX=['Hypertension','Type 2 diabetes','Arthritis','Heart disease','Post-surgery recovery','Dementia','Asthma'],AREAS=['Pune','Mumbai','Nagpur'],DOCS=['Dr. Anita Rao','Dr. Sameer Kulkarni','Dr. Nilesh Joshi','Dr. Priya Menon','Dr. Rahul Bhide'];
+const FAC=[['City Care Hospital','Pune','hospital'],['Lotus Multispeciality Hospital','Pune','hospital'],['Sunrise Old Age Home','Pune','oldage'],['Anand Vruddhashram','Pune','oldage'],['Harbor View Hospital','Mumbai','hospital'],['Seaside Old Age Home','Mumbai','oldage'],['Orange City Hospital','Nagpur','hospital'],['Green Valley Old Age Home','Nagpur','oldage']];
+const LC=['en-IN','hi-IN','mr-IN'],LK=['en','hi','mr'],PER=['morning','afternoon','evening','night'],PT={morning:'08:00',afternoon:'13:00',evening:'19:00',night:'22:00'},COL=['#C66F80','#4A6644','#9FAA74','#B5566B'];
+const mn=t=>{const[a,b]=t.split(':');return +a*60+ +b},now=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()};
+const per=t=>{const h=+t.split(':')[0];return h>=5&&h<12?'morning':h<17&&h>=12?'afternoon':h>=17&&h<21?'evening':'night'};
+const key=t=>{const m=mn(t);return m<300?m+1440:m},hm=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+const addm=(t,x)=>{const v=mn(t)+x,p=n=>String(n).padStart(2,'0');return p(Math.floor(v/60)%24)+':'+p(v%60)};
+const R=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return(h%1000)/1000};
+const mk=(id,name,age,dx,kind,area,place,doc,ms)=>({id,name,age,dx,kind,area,place,doc,photo:null,meds:ms.map((m,i)=>({n:m[0],d:m[1],t:m[2],k:mn(m[2])<now()-45&&i%2==0?m[2]:null})),
+ hist:ms.flatMap(m=>[1,2,3,4,5,6].map(o=>{const r=R(id+m[0]+o);return{o,n:m[0],d:m[1],t:m[2],k:r>.15?addm(m[2],Math.floor(r*20)):null}}))});
+const seed=()=>({user:null,sel:0,nextCg:1001,nextP:107,prefs:{theme:'auto',fs:1,lead:5,grace:45},patients:[
+mk('P-101','Kamla Joshi',78,'Hypertension','oldage','Pune','Sunrise Old Age Home','Dr. Anita Rao',[['Amlodipine','5 mg','08:00'],['Aspirin','75 mg','13:00'],['Vitamin D','1 capsule','20:00'],['Atorvastatin','10 mg','22:00']]),
+mk('P-102','Ramesh Patil',82,'Type 2 diabetes','oldage','Pune','Sunrise Old Age Home','Dr. Sameer Kulkarni',[['Metformin','500 mg','07:30'],['Glimepiride','1 mg','13:30'],['Calcium','1 tablet','19:30']]),
+mk('P-103','Meera Iyer',64,'Post-surgery recovery','hospital','Pune','City Care Hospital','Dr. Priya Menon',[['Paracetamol','650 mg','09:00'],['Pantoprazole','40 mg','14:00'],['Cefixime','200 mg','21:00']]),
+mk('P-104','Arjun Deshmukh',59,'Heart disease','hospital','Pune','City Care Hospital','Dr. Nilesh Joshi',[['Clopidogrel','75 mg','08:30'],['Metoprolol','25 mg','18:00']]),
+mk('P-105','Sulochana Kulkarni',85,'Arthritis','oldage','Pune','Anand Vruddhashram','Dr. Sameer Kulkarni',[['Diclofenac','50 mg','09:30'],['Calcium','1 tablet','17:30']]),
+mk('P-106','Vasant Gokhale',74,'Asthma','alone','Pune','Home','Dr. Rahul Bhide',[['Montelukast','10 mg','21:30'],['Inhaler','2 puffs','08:00'],['Cetirizine','10 mg','15:00']])]});
+let S;try{S=JSON.parse(localStorage.getItem('medibot3'))}catch(e){}S=S||seed();S.prefs=Object.assign({theme:'auto',fs:1,lead:5,grace:45},S.prefs);
+const save=()=>{try{localStorage.setItem('medibot3',JSON.stringify(S))}catch(e){}};
+let LD={role:'caregiver',name:'',id:'',lang:'en',area:'Pune',kind:'hospital',fac:'',mic:false},spoken={},newPhoto=null,VIEW='main',TAB='today';
+const li=()=>LK.indexOf(S.user?S.user.lang:LD.lang),t=k=>T[k][li()],tr=s=>{const i=li();return i&&TR[s]?TR[s][i-1]:s};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const st=m=>{if(m.k)return'taken';const x=now()-mn(m.t);return x>=S.prefs.grace?'missed':x>=-S.prefs.lead?'due':'upcoming'};
+const $=id=>document.getElementById(id),toast=x=>{const e=$('toast');e.textContent=x;e.className='on';clearTimeout(toast.h);toast.h=setTimeout(()=>e.className='',2800)};
+const speak=x=>{try{const u=new SpeechSynthesisUtterance(x);u.lang=LC[li()];speechSynthesis.speak(u)}catch(e){}};
+const applyPrefs=()=>{const h=document.documentElement;S.prefs.theme=='auto'?h.removeAttribute('data-theme'):h.setAttribute('data-theme',S.prefs.theme);document.body.style.zoom=S.prefs.fs};
+const me=()=>S.patients.find(p=>p.id==S.user.id);
+const vis=()=>S.patients.filter(p=>S.user.kind=='alone'?p.kind=='alone'&&p.area==S.user.area:p.place==S.user.place);
+const av=(p,z)=>p.photo?`<img class="av" style="width:${z}px;height:${z}px" src="${p.photo}" alt="">`:`<div class="av" style="width:${z}px;height:${z}px;font-size:${z/2.4}px;background:${COL[p.name.length%4]}">${esc(p.name.split(' ').map(w=>w[0]).slice(0,2).join(''))}</div>`;
+const opts=(a,sel)=>a.map(([v,l])=>`<option value="${esc(v)}" ${v==sel?'selected':''}>${esc(l)}</option>`).join('');
+const LANGS=[['en','English'],['hi','हिन्दी'],['mr','मराठी']];
+function login(){applyPrefs();const L=LD,fl=FAC.filter(f=>f[1]==L.area&&f[2]==L.kind).map(f=>f[0]);if(!fl.includes(L.fac))L.fac=fl[0]||'';document.documentElement.lang=LK[li()];
+ const cg=L.role=='caregiver',lang=`<label for="lg">${t('lang')}</label><select id="lg" data-f="lang">${opts(LANGS,L.lang)}</select>`;
+ $('app').innerHTML=`<div class="login card"><div class="brand">medi<i>bot</i></div><h1>${t('tagline')}</h1>
+ <div class="seg"><button data-a="role" data-v="caregiver" class="${cg?'on':''}">${t('caregiver')}</button><button data-a="role" data-v="patient" class="${cg?'':'on'}">${t('patient')}</button></div>
+ ${cg?`<label for="nm">${t('name')}</label><input id="nm" data-f="name" autocomplete="name" value="${esc(L.name)}">${lang}
+ <label for="ar">${t('area')}</label><select id="ar" data-f="area">${opts(AREAS.map(a=>[a,tr(a)]),L.area)}</select>
+ <label for="kd">${t('setting')}</label><select id="kd" data-f="kind">${opts(['hospital','oldage','alone'].map(k=>[k,t(k)]),L.kind)}</select>
+ ${L.kind=='alone'?'':`<label for="fc">${t('fac')}</label><select id="fc" data-f="fac">${opts(fl.map(f=>[f,tr(f)]),L.fac)}</select>`}`
+ :`<label for="pi">${t('pid')}</label><input id="pi" data-f="id" placeholder="P-101" value="${esc(L.id)}"><p style="font-size:13px;opacity:.8;margin:6px 0 0">${t('idHint')}</p>${lang}`}
+ <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" data-f="mic" style="width:auto" ${L.mic?'checked':''}> ${t('mic')}</label>
+ <button class="btn w" data-a="go">${t('signIn')}</button></div>`}
+function go(){const L=LD;let u;
+ if(L.role=='caregiver'){if(!L.name.trim())return toast(t('needName'));if(L.kind!='alone'&&!L.fac)return toast(t('needFac'));
+  u={role:'caregiver',name:L.name.trim(),id:'CG-'+S.nextCg++,kind:L.kind,area:L.area,place:L.kind=='alone'?'Home':L.fac};}
+ else{const p=S.patients.find(x=>x.id.toLowerCase()==L.id.trim().toLowerCase());if(!L.id.trim())return toast(t('needId'));if(!p)return toast(t('idNF'));
+  u={role:'patient',name:p.name,id:p.id,kind:p.kind,area:p.area,place:p.place};}
+ u.lang=L.lang;u.mic=L.mic;S.user=u;S.sel=0;VIEW='main';TAB='today';save();render();if(u.role=='caregiver')toast(t('cgId')+': '+u.id)}
+function mark(pid,i){const p=S.patients.find(x=>x.id==pid);p.meds[i].k=hm();save();render();toast(tr(p.name)+': '+t('rec'))}
+function took(){const p=me(),d=p.meds.findIndex(m=>st(m)=='due'),i=d>=0?d:p.meds.findIndex(m=>!m.k);if(i<0)return toast(t('none'));mark(p.id,i)}
+function mic(){const Rc=window.SpeechRecognition||window.webkitSpeechRecognition;if(!Rc)return toast(t('noVoice'));
+ const r=new Rc();r.lang=LC[li()];r.onresult=e=>{const x=e.results[0][0].transcript;toast(t('heard')+': '+x);if(/took|taken|done|ले ली|खा ली|घेतली|घेतले/i.test(x)){took();speak(t('taken'))}};r.onerror=()=>toast(t('noHear'));r.start();toast(t('listen'))}
+function addMed(){const p=S.user.role=='patient'?me():vis()[S.sel],g=i=>$(i).value.trim();if(!g('mn')||!g('mt'))return toast(t('needMed'));
+ p.meds.push({n:g('mn'),d:g('md')||'1 tablet',t:g('mt'),k:null});p.meds.sort((a,b)=>key(a.t)-key(b.t));save();render()}
+function addPat(){const g=i=>$(i).value.trim(),dx=g('px')=='other'?g('po'):g('px');if(!g('pn')||!g('pa'))return toast(t('needNA'));
+ const id='P-'+S.nextP++;S.patients.push({id,name:g('pn'),age:+g('pa'),dx:dx||DX[0],doc:g('pd'),kind:S.user.kind,area:S.user.area,place:S.user.place,photo:newPhoto,meds:[],hist:[]});newPhoto=null;S.sel=vis().length-1;save();render();toast(t('newId')+': '+id)}
+function rz(f,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=160;const s=Math.min(im.width,im.height);c.getContext('2d').drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,160,160);cb(c.toDataURL('image/jpeg',.8))};im.src=r.result};r.readAsDataURL(f)}
+function sched(p){if(!p.meds.length)return`<p>${t('noMeds')}</p>`;
+ return PER.map(k=>{const L=p.meds.map((m,i)=>({m,i,s:st(m)})).filter(x=>per(x.m.t)==k).sort((a,b)=>key(a.m.t)-key(b.m.t));
+  return L.length?`<h4 class="per ${k}">${t(k)} · ${L.length}</h4>`+L.map(({m,i,s})=>`<div class="slot ${s}"><time>${m.t}</time><div><b>${esc(m.n)}</b><small>${esc(tr(m.d))}${m.k?' · '+t('at')+' '+m.k:''}</small></div>
+  ${s=='taken'?`<span class="tag">${t('taken')}</span>`:S.user.role=='caregiver'?`<button class="btn g" data-a="mark" data-p="${esc(p.id)}" data-i="${i}" style="padding:6px 12px;${s=='due'?'background:#fff;color:#4A6644':''}">${t('mark')}</button>`:`<span class="tag">${t(s)}</span>`}</div>`).join(''):''}).join('')}
+const medForm=()=>`<details><summary>${t('addMed')}</summary><label for="mn">${t('med')}</label><input id="mn"><div class="row"><div><label for="md">${t('dose')}</label><input id="md" placeholder="500 mg"></div><div><label for="mp">${t('slot')}</label><select id="mp" data-f="slot">${PER.map(k=>`<option value="${k}">${t(k)}</option>`).join('')}</select></div></div><label for="mt">${t('time')}</label><input id="mt" type="time" value="08:00"><button class="btn g w" data-a="addMed">${t('saveMed')}</button></details>`;
+const tabs=()=>`<div class="seg" style="margin:14px 0"><button data-a="tab" data-v="today" class="${TAB=='today'?'on':''}">${t('tabToday')}</button><button data-a="tab" data-v="history" class="${TAB=='history'?'on':''}">${t('history')}</button></div>`;
+function histView(p){const D=[],lc=LC[li()];for(let o=6;o>=0;o--){const e=(o?(p.hist||[]).filter(h=>h.o==o).map(h=>({...h,s:h.k?'taken':'missed'})):p.meds.map(m=>({...m,s:st(m)}))).sort((a,b)=>key(a.t)-key(b.t));D.push({o,d:new Date(Date.now()-o*864e5),e})}
+ const all=D.flatMap(x=>x.e),tk=all.filter(x=>x.s=='taken').length,ms=all.filter(x=>x.s=='missed').length,rs=tk+ms,wd=x=>x.d.toLocaleDateString(lc,{weekday:'short'}),dt=x=>x.d.toLocaleDateString(lc,{day:'numeric',month:'short'});
+ return`<div class="stats"><div class="stat s1"><b>${rs?Math.round(tk/rs*100):0}%</b>${t('adh7')}</div><div class="stat s3"><b>${tk}</b>${t('taken')}</div><div class="stat s2"><b>${ms}</b>${t('missed')}</div></div>
+ <h3>${t('last7')}</h3><div class="hg">${D.map(x=>`<div><small>${wd(x)}</small><b>${x.d.getDate()}</b>${x.e.map(y=>`<i class="${y.s}" title="${esc(y.n)} ${y.t}"></i>`).join('')}</div>`).join('')}</div>
+ <h3 style="margin:18px 0 0">${t('log')}</h3>${D.slice().reverse().map(x=>`<details ${x.o?'':'open'}><summary>${(x.o?wd(x):t('todayL'))+', '+dt(x)} · ${x.e.filter(y=>y.s=='taken').length}/${x.e.length}</summary>${x.e.map(y=>`<div class="slot ${y.s}" style="margin-top:8px"><time>${y.t}</time><div><b>${esc(y.n)}</b><small>${esc(tr(y.d))}${y.k?' · '+t('at')+' '+y.k:''}</small></div><span class="tag">${t(y.s)}</span></div>`).join('')||`<p>${t('noHist')}</p>`}</details>`).join('')}`}
+function settings(){const u=S.user,P=S.prefs,sel=(k,a)=>`<select data-f="pref" data-k="${k}">${opts(a,P[k])}</select>`,mins=a=>a.map(v=>[v,v+' '+t('min')]);
+ $('app').innerHTML=`<div class="top"><div class="brand">medi<i>bot</i></div><button class="btn o" data-a="back" style="padding:6px 12px">← ${t('back')}</button></div>
+ <div class="card" style="max-width:640px"><h2>${t('settings')}</h2>
+ <h3 style="margin:16px 0 8px">${t('profile')}</h3><span class="chip">${esc(tr(u.name))} · ${esc(u.id)}</span> <span class="chip p">${t(u.role)}</span> <span class="chip">${esc(tr(u.place))}</span>
+ <div class="sr"><span>${t('lang')}</span><select data-f="applang">${opts(LANGS,u.lang)}</select></div>
+ <h3 style="margin:16px 0 0">${t('appearance')}</h3><div class="sr"><span>${t('theme')}</span>${sel('theme',[['auto',t('tAuto')],['light',t('tLight')],['dark',t('tDark')]])}</div>
+ <div class="sr"><span>${t('tsize')}</span>${sel('fs',[[1,t('sN')],[1.15,t('sL')],[1.3,t('sX')]])}</div>
+ <h3 style="margin:16px 0 0">${t('voice')}</h3><div class="sr"><span>${t('mic')}</span><input type="checkbox" data-f="mic2" style="width:auto" ${u.mic?'checked':''}></div>
+ <h3 style="margin:16px 0 0">${t('reminders')}</h3><div class="sr"><span>${t('lead')}</span>${sel('lead',mins([0,5,10,15]))}</div><div class="sr"><span>${t('grace')}</span>${sel('grace',mins([30,45,60]))}</div>
+ <h3 style="margin:16px 0 8px">${t('data')}</h3><button class="btn o" data-a="reset">${t('reset')}</button></div>`}
+function render(){if(!S.user)return login();applyPrefs();const u=S.user;document.documentElement.lang=LK[li()];if(VIEW=='settings')return settings();
+ const head=`<div class="top"><div class="brand">medi<i>bot</i></div><div class="chips"><span class="chip">${esc(tr(u.name))} · ${esc(u.id)}</span><span class="chip p">${t(u.role)}</span><span class="chip">${esc(tr(u.place))}${u.kind=='alone'?', '+esc(tr(u.area)):''}</span>
+ <select aria-label="${t('lang')}" data-f="applang" style="width:auto;padding:5px 8px">${opts(LANGS,u.lang)}</select><button class="btn o" data-a="settings" style="padding:6px 12px">⚙ ${t('settings')}</button><button class="btn o" data-a="out" style="padding:6px 12px">${t('signOut')}</button></div></div>`;
+ if(u.role=='patient'){const p=me(),nx=p.meds.filter(m=>!m.k).sort((x,y)=>key(x.t)-key(y.t))[0],dn=nx&&st(nx)=='due';
+  if(dn&&u.mic&&!spoken[nx.n+nx.t]){spoken[nx.n+nx.t]=1;speak(t('due')+': '+nx.n)}
+  $('app').innerHTML=head+`<div class="big">${av(p,84)}<div><span>${t('hello')}, ${esc(tr(p.name))}</span><h2>${nx?esc(nx.n)+' · '+esc(tr(nx.d)):t('none')}</h2><div>${nx?(dn?t('due'):t('next'))+' · '+nx.t:''}</div>
+   <div class="row" style="justify-content:flex-start"><button class="btn" data-a="took">${t('took')}</button>${u.mic?`<button class="btn" data-a="mic">🎤 ${t('speak')}</button>`:''}</div></div></div>
+   <div class="card"><p style="margin:0"><span class="chip">${p.age} ${t('yrs')}</span> <span class="chip p">${esc(tr(p.dx))}</span> <span class="chip">👨‍⚕️ ${esc(tr(p.doc))}</span></p>${tabs()}${TAB=='history'?histView(p):`<h3>${t('today')}</h3>${sched(p)}${u.kind=='alone'?medForm():`<p><small>${t('cgAdds')}</small></p>`}`}</div>`;return}
+ const v=vis();if(S.sel>=v.length)S.sel=0;const p=v[S.sel],all=v.flatMap(x=>x.meds),tk=all.filter(m=>m.k).length,ms=all.filter(m=>st(m)=='missed').length,dn=all.filter(m=>st(m)=='due').length;
+ $('app').innerHTML=head+`<div class="stats"><div class="stat s1"><b>${all.length?Math.round(tk/all.length*100):0}%</b>${t('adh')}</div><div class="stat s2"><b>${dn}</b>${t('due')}</div><div class="stat s3"><b>${ms}</b>${t('missed')}</div></div>
+ <div class="grid"><div class="card pl"><h3 style="margin-bottom:12px">${t('patients')}</h3>${v.map((x,i)=>{const bad=x.meds.some(m=>st(m)=='missed'),d=x.meds.some(m=>st(m)=='due');return`<button class="pb ${i==S.sel?'on':''}" data-a="pick" data-i="${i}">${av(x,46)}<span><b>${esc(tr(x.name))}</b><small>${esc(x.id)} · ${x.age} ${t('yrs')}</small><small>${bad?'⚠ '+t('mDose'):d?'● '+t('dDue'):'✓ '+t('ok')}</small></span></button>`}).join('')}
+  <details><summary>${t('addPat')}</summary><label>${t('photo')}</label><div class="row" style="justify-content:flex-start"><div id="pv" style="flex:none"><div class="av" style="width:56px;height:56px;background:var(--mm)">+</div></div><input type="file" accept="image/*" data-f="photo" aria-label="${t('add')}"></div>
+  <label for="pn">${t('name')}</label><input id="pn"><label for="pa">${t('age')}</label><input id="pa" type="number" min="0" max="120">
+  <label for="px">${t('dx')}</label><select id="px" data-f="dx">${opts(DX.map(d=>[d,tr(d)]).concat([['other',t('other')]]),DX[0])}</select><input id="po" placeholder="${t('otherDx')}" style="display:none;margin-top:8px">
+  <label for="pd">${t('doctor')}</label><select id="pd">${opts(DOCS.map(d=>[d,tr(d)]),DOCS[0])}</select><button class="btn g w" data-a="addPat">${t('savePat')}</button></details></div>
+  <div class="card">${p?`<div class="row" style="justify-content:flex-start">${av(p,72)}<div><h2>${esc(tr(p.name))}</h2><p style="margin:2px 0"><span class="chip">${esc(p.id)}</span> <span class="chip">${p.age} ${t('yrs')}</span> <span class="chip p">${esc(tr(p.dx))}</span></p></div></div>
+  <div class="sr" style="border:0;padding:10px 0 0"><span>👨‍⚕️ ${t('doctor')}</span><select data-f="doc">${opts(DOCS.map(d=>[d,tr(d)]),p.doc)}</select></div>${tabs()}${TAB=='history'?histView(p):`<h3>${t('today')}</h3>${sched(p)}${medForm()}`}`:`<p>${t('noPat')}</p>`}</div></div>`}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;
+ if(a=='role'){LD.role=b.dataset.v;login()}else if(a=='go')go();else if(a=='out'){S.user=null;VIEW='main';save();login()}else if(a=='pick'){S.sel=+b.dataset.i;render()}
+ else if(a=='mark')mark(b.dataset.p,+b.dataset.i);else if(a=='took')took();else if(a=='mic')mic();else if(a=='addMed')addMed();else if(a=='addPat')addPat();
+ else if(a=='tab'){TAB=b.dataset.v;render()}else if(a=='settings'){VIEW='settings';render()}else if(a=='back'){VIEW='main';render()}
+ else if(a=='reset'){if(!confirm(t('resetQ')))return;const pf=S.prefs;S=seed();S.prefs=pf;VIEW='main';save();render()}});
+document.addEventListener('change',e=>{const el=e.target,f=el.dataset.f;if(!f)return;const v=el.type=='checkbox'?el.checked:el.value;
+ if(f=='applang'){S.user.lang=v;save();render()}else if(f=='slot')$('mt').value=PT[v];else if(f=='dx')$('po').style.display=v=='other'?'block':'none';
+ else if(f=='pref'){S.prefs[el.dataset.k]=el.dataset.k=='theme'?v:+v;save();render()}else if(f=='mic2'){S.user.mic=v;save()}
+ else if(f=='doc'){vis()[S.sel].doc=v;save();render()}
+ else if(f=='photo'){if(el.files[0])rz(el.files[0],d=>{newPhoto=d;$('pv').innerHTML=`<img class="av" style="width:56px;height:56px" src="${d}" alt="">`})}
+ else{LD[f]=v;if(f=='lang'||f=='area'||f=='kind'){if(f!='lang')LD.fac='';login()}}});
+document.addEventListener('input',e=>{const f=e.target.dataset.f;if(f=='name'||f=='id')LD[f]=e.target.value});
+setInterval(()=>{if(S.user&&VIEW=='main'&&!document.querySelector('details[open]')&&!/INPUT|SELECT/.test(document.activeElement.tagName))render()},30000);
+render();
+const sp=$('splash'),end=()=>{sp.classList.add('out');setTimeout(()=>sp.remove(),700)};sp.onclick=end;
+setTimeout(end,matchMedia('(prefers-reduced-motion:reduce)').matches?600:3700);
+</script></body></html>
